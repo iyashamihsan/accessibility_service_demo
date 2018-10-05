@@ -1,0 +1,5 @@
+<resources>
+	<string	name="app_name"	translatable="false">whatsapp</string>
+	<string name="accessibility_service_label" translatable="false">Access WhatsApp</string>
+	<string name="accessibility_service_description">Access WhatsApp search method</string>
+</resources>
