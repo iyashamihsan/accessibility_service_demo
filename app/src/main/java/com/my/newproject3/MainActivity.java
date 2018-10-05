@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
    		   setAccessibilityPermissions();
 		}
 		
+		if(isAccessibilitySettingsOn(this)){
 		
 		Toast.makeText(this, "Opening WhatsApp", Toast.LENGTH_SHORT).show();
 
@@ -42,6 +43,13 @@ public class MainActivity extends Activity {
 		Log.v("Whatsapp intent after", "opening whatsapp");
 
 		finish();
+			
+		}
+		else{
+		     Toast.makeText(this, "Please enable accessibility setting", Toast.LENGTH_SHORT).show();
+		     finish();
+		}
+		
 		//openWhatsapp = (Button) findViewById(R.id.open_wt);
 
 		//openWhatsapp.setOnClickListener(openWhatsappClick);
@@ -169,6 +177,55 @@ public class MainActivity extends Activity {
                 return;
             }
         }).create().show();
-}
+     }
+	
+     /**
+     * Check if Accessibility Service is enabled.
+     *
+     * @param mContext
+     * @return <code>true</code> if Accessibility Service is ON, otherwise <code>false</code>
+     */
+    public static boolean isAccessibilitySettingsOn(Context mContext) {
+        int accessibilityEnabled = 0;
+        //your package /   accesibility service path/class
+        final String service = "com.my.newproject3/com.my.newproject3.services.AppAccessibilityService";
+
+        boolean accessibilityFound = false;
+        try {
+            accessibilityEnabled = Settings.Secure.getInt(
+                    mContext.getApplicationContext().getContentResolver(),
+                    android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
+            Log.v(TAG, "accessibilityEnabled = " + accessibilityEnabled);
+        } catch (Settings.SettingNotFoundException e) {
+            Log.e(TAG, "Error finding setting, default accessibility to not found: "
+                    + e.getMessage());
+        }
+        TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
+
+        if (accessibilityEnabled == 1) {
+            Log.v(TAG, "***ACCESSIBILIY IS ENABLED*** -----------------");
+            String settingValue = Settings.Secure.getString(
+                    mContext.getApplicationContext().getContentResolver(),
+                    Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+            if (settingValue != null) {
+                TextUtils.SimpleStringSplitter splitter = mStringColonSplitter;
+                splitter.setString(settingValue);
+                while (splitter.hasNext()) {
+                    String accessabilityService = splitter.next();
+
+                    Log.v(TAG, "-------------- > accessabilityService :: " + accessabilityService);
+                    if (accessabilityService.equalsIgnoreCase(service)) {
+                        Log.v(TAG, "We've found the correct setting - accessibility is switched on!");
+                        return true;
+                    }
+                }
+            }
+        } else {
+            Log.v(TAG, "***ACCESSIBILIY IS DISABLED***");
+        }
+
+        return accessibilityFound;
+    }
+
 	
 }
