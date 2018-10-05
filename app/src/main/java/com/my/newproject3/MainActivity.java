@@ -29,6 +29,11 @@ public class MainActivity extends Activity {
 		super.onCreate(_savedInstanceState);
 		//setContentView(R.layout.main);
 
+		if(!checkAccessibilityPermissions()) {
+   		   setAccessibilityPermissions();
+		}
+		
+		
 		Toast.makeText(this, "Opening WhatsApp", Toast.LENGTH_SHORT).show();
 
 		Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.whatsapp");
@@ -133,5 +138,37 @@ public class MainActivity extends Activity {
 	public int getDisplayHeightPixels(){
 		return getResources().getDisplayMetrics().heightPixels;
 	}
+	
+	 
+    public boolean checkAccessibilityPermissions() {
+        AccessibilityManager accessibilityManager = (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
+
+        // getEnabledAccessibilityServiceList
+        List<AccessibilityServiceInfo> list = accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.DEFAULT);
+
+        for (int i = 0; i < list.size(); i++) {
+            AccessibilityServiceInfo info = list.get(i);
+
+            // 접근성 권한을 가진 앱의 패키지 네임과 패키지 네임이 같으면 현재앱이 접근성 권한을 가지고 있다고 판단함
+            if (info.getResolveInfo().serviceInfo.packageName.equals(getApplication().getPackageName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // set Accessibility permission
+    public void setAccessibilityPermissions() {
+        AlertDialog.Builder gsDialog = new AlertDialog.Builder(this);
+        gsDialog.setTitle("접근성 권한 설정");
+        gsDialog.setMessage("접근성 권한을 필요로 합니다");
+        gsDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // 설정화면으로 보내는 부분
+                startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+                return;
+            }
+        }).create().show();
+}
 	
 }
