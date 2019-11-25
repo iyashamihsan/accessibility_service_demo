@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/accessibility_service_demo.iml" filepath="$PROJECT_DIR$/accessibility_service_demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/accessibility_service_demo-app.iml" filepath="$PROJECT_DIR$/app/accessibility_service_demo-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/whasapp access.iml" filepath="$PROJECT_DIR$/whasapp access.iml" />
     </modules>
   </component>
 </project>

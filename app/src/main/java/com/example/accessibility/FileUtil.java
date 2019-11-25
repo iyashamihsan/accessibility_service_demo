@@ -1,4 +1,4 @@
-package com.my.newproject3;
+package com.example.accessibility;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;

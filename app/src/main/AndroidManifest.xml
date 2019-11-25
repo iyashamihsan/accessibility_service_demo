@@ -1,6 +1,7 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.my.newproject3">
+	xmlns:tools="http://schemas.android.com/tools"
+	package="com.example.accessibility">
 	<uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
 
 	<application
@@ -9,9 +10,9 @@
 		android:icon="@mipmap/ic_launcher"
 		android:roundIcon="@mipmap/ic_launcher_round"
 		android:largeHeap="true"
-		android:theme="@android:style/Theme.NoDisplay">
+		tools:ignore="GoogleAppIndexingWarning">
 		<activity
-			android:name=".MainActivity"
+			android:name="com.example.accessibility.MainActivity"
 			android:configChanges="orientation|screenSize"
 			android:screenOrientation="portrait">
 			<intent-filter>
@@ -20,7 +21,7 @@
 			</intent-filter>
 		</activity>
 
-		<service android:name=".services.AppAccessibilityService"
+		<service android:name="com.example.accessibility.services.AppAccessibilityService"
 			android:label="@string/accessibility_service_label"
 			android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
 			<intent-filter>

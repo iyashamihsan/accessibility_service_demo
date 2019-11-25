@@ -1,4 +1,4 @@
-package com.my.newproject3;
+package com.example.accessibility;
 
 import android.content.Context;
 import android.util.SparseBooleanArray;

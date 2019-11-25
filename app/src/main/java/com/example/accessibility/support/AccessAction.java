@@ -1,4 +1,4 @@
-package com.my.newproject3.support;
+package com.example.accessibility.support;
 
 public class AccessAction {
 

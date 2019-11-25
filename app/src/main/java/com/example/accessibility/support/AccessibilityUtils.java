@@ -1,13 +1,8 @@
-package com.my.newproject3.support;
+package com.example.accessibility.support;
 
 import android.view.accessibility.AccessibilityNodeInfo;
 import java.util.List;
 
-import android.annotation.TargetApi;
-import android.app.ActivityManager;
-import android.content.ComponentName;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;

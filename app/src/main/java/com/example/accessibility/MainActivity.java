@@ -1,55 +1,47 @@
-package com.my.newproject3;
+package com.example.accessibility;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends Activity {
-	
+
+	private static final String TAG = "Access";
 	private Timer _timer = new Timer();
 	
 	private Intent start = new Intent();
 	private TimerTask delay;
 
-	Button openWhatsapp;
+	Button openJazzWorldBtn;
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
-		//setContentView(R.layout.main);
+		setContentView(R.layout.main);
 
-		if(!checkAccessibilityPermissions()) {
-   		   setAccessibilityPermissions();
-		}
-		
-		if(isAccessibilitySettingsOn(this)){
-		
-		Toast.makeText(this, "Opening WhatsApp", Toast.LENGTH_SHORT).show();
+		openJazzWorldBtn = (Button) findViewById(R.id.open_jw);
 
-		Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.whatsapp");
-		launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(launchIntent);
-		Log.v("Whatsapp intent after", "opening whatsapp");
+		openJazzWorldBtn.setOnClickListener(openJazzWorldAppClick);
 
-		finish();
-			
-		}
-		else{
-		     Toast.makeText(this, "Please enable accessibility setting", Toast.LENGTH_SHORT).show();
-		     finish();
-		}
-		
 		//openWhatsapp = (Button) findViewById(R.id.open_wt);
 
 		//openWhatsapp.setOnClickListener(openWhatsappClick);
@@ -59,10 +51,11 @@ public class MainActivity extends Activity {
 		//initializeLogic();
 	}
 
-	View.OnClickListener openWhatsappClick = new View.OnClickListener() {
+	View.OnClickListener openJazzWorldAppClick = new View.OnClickListener() {
 		@Override
 		public void onClick(View view) {
 
+			loadJazzWorldApp();
 
 		}
 	};
@@ -168,9 +161,9 @@ public class MainActivity extends Activity {
     // set Accessibility permission
     public void setAccessibilityPermissions() {
         AlertDialog.Builder gsDialog = new AlertDialog.Builder(this);
-        gsDialog.setTitle("접근성 권한 설정");
-        gsDialog.setMessage("접근성 권한을 필요로 합니다");
-        gsDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+        gsDialog.setTitle("Allow Permission");
+        gsDialog.setMessage("Accessibility access needed");
+        gsDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // 설정화면으로 보내는 부분
                 startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
@@ -227,5 +220,24 @@ public class MainActivity extends Activity {
         return accessibilityFound;
     }
 
-	
+	private void loadJazzWorldApp(){
+
+		if(!checkAccessibilityPermissions()) {
+			setAccessibilityPermissions();
+		}
+
+		if(isAccessibilitySettingsOn(MainActivity.this)){
+
+			Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.jazz.jazzworld");
+			launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(launchIntent);
+			Log.v("Whatsapp intent after", "opening jazzworld");
+			Toast.makeText(this, "Opening jazzworld", Toast.LENGTH_SHORT).show();
+
+		}
+		else{
+			Toast.makeText(this, "Please enable accessibility setting", Toast.LENGTH_SHORT).show();
+			//finish();
+		}
+	}
 }

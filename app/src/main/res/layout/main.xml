@@ -10,7 +10,7 @@
 	<Button
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:id="@+id/open_wt"
-		android:text="open whatsapp"/>
+		android:id="@+id/open_jw"
+		android:text="open jazz world"/>
 
 </LinearLayout>

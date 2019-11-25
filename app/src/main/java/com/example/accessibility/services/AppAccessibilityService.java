@@ -1,9 +1,8 @@
-package com.my.newproject3.services;
+package com.example.accessibility.services;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -12,10 +11,8 @@ import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
-import com.my.newproject3.support.AccessAction;
-import com.my.newproject3.support.AccessibilityUtils;
+import com.example.accessibility.support.AccessAction;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AppAccessibilityService extends AccessibilityService {
@@ -37,6 +34,17 @@ public class AppAccessibilityService extends AccessibilityService {
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
 
         Log.d(TAG, "onAccessibilityEvent");
+
+        AccessibilityNodeInfo node = getRootInActiveWindow();
+        if(node != null) {
+            for(int i = 0; i < node.getChildCount(); i++){
+                AccessibilityNodeInfo childNode = node.getChild(i);
+                if(childNode != null){
+                    Log.i("JZW", "-----getText->"+childNode.getText()+"---getContentDescription-->"+childNode.getContentDescription() );
+                }
+            }
+        }
+
         final String sourcePackageName = (String) accessibilityEvent.getPackageName();
         currntApplicationPackage = sourcePackageName;
         Log.d(TAG, "sourcePackageName:" + sourcePackageName);
@@ -69,23 +77,24 @@ public class AppAccessibilityService extends AccessibilityService {
             Log.d(TAG, "onAccessibilityEvent: type_view_clicked");
         }
 
-        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        //windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-        if (accessibilityEvent.getPackageName() == null || !(accessibilityEvent.getPackageName().equals("com.bsb.hike") || !(accessibilityEvent.getPackageName().equals("com.whatsapp") || accessibilityEvent.getPackageName().equals("com.facebook.orca") || accessibilityEvent.getPackageName().equals("com.twitter.android") || accessibilityEvent.getPackageName().equals("com.facebook.katana") || accessibilityEvent.getPackageName().equals("com.facebook.lite"))))
-            showWindow = false;
+//        Log.d("RSC", "count: " + accessibilityEvent.getSource().getViewIdResourceName());
+        /*if (accessibilityEvent.getPackageName() == null || !(accessibilityEvent.getPackageName().equals("com.bsb.hike") || !(accessibilityEvent.getPackageName().equals("com.whatsapp") || accessibilityEvent.getPackageName().equals("com.facebook.orca") || accessibilityEvent.getPackageName().equals("com.twitter.android") || accessibilityEvent.getPackageName().equals("com.facebook.katana") || accessibilityEvent.getPackageName().equals("com.facebook.lite"))))
+            showWindow = false;*/
 
         //logViewHierarchy(accessibilityEvent.get,0);
 
-        int count = accessibilityEvent.getSource().getChildCount();
+        if (accessibilityEvent != null && accessibilityEvent.getSource() != null && accessibilityEvent.getSource().getChildCount() != 0) {
+            int count = accessibilityEvent.getSource().getChildCount();
 
-        Log.d(TAG, "count: "+ count);
+            Log.d(TAG, "count: " + count);
 
 
-        Log.d(TAG, "count: "+ accessibilityEvent.getSource().getViewIdResourceName());
-        Log.d(TAG, "count: "+ count);
-        Log.d(TAG, "count: "+ count);
-        Log.d(TAG, "count: "+ count);
+            Log.d(TAG, "count: " + accessibilityEvent.getSource().getViewIdResourceName());
+            Log.d(TAG, "count: " + count);
 
+        }
        /* if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED) {
             Log.d(TAGEVENTS, "TYPE_VIEW_TEXT_CHANGED");
             if (windowController == null)
@@ -127,15 +136,17 @@ public class AppAccessibilityService extends AccessibilityService {
         info.notificationTimeout = 100;
 
         this.setServiceInfo(info);
+
+        Log.d("JAZZ","service connected");
     }
 
     public static void logViewHierarchy(AccessibilityNodeInfo nodeInfo, final int depth) {
 
         if (nodeInfo == null) return;
 
-        List<AccessibilityNodeInfo> nodeInfo1 = nodeInfo.findAccessibilityNodeInfosByViewId("search_view");
-        List<AccessibilityNodeInfo> nodeInfo2 = nodeInfo.findAccessibilityNodeInfosByViewId("search_filter");
-        List<AccessibilityNodeInfo> nodeInfo3 = nodeInfo.findAccessibilityNodeInfosByViewId("search_holder");
+        List<AccessibilityNodeInfo> nodeInfo1 = nodeInfo.findAccessibilityNodeInfosByViewId("menu_ic_buysim_dailyreward");
+        List<AccessibilityNodeInfo> nodeInfo2 = nodeInfo.findAccessibilityNodeInfosByViewId("menu_lbl_buysim_dailyreward");
+        //List<AccessibilityNodeInfo> nodeInfo3 = nodeInfo.findAccessibilityNodeInfosByViewId("search_holder");
 
         for (AccessibilityNodeInfo node: nodeInfo1){
 
@@ -147,10 +158,10 @@ public class AppAccessibilityService extends AccessibilityService {
             Log.d(TAG, "Node2: "+ node.getViewIdResourceName() + " " + node.getContentDescription());
         }
 
-        for (AccessibilityNodeInfo node: nodeInfo3){
+        /*for (AccessibilityNodeInfo node: nodeInfo3){
 
             Log.d("FIND", "Node3: "+ node.getViewIdResourceName() + " " + node.getContentDescription());
-        }
+        }*/
 
 
         String spacerString = "";
@@ -161,9 +172,33 @@ public class AppAccessibilityService extends AccessibilityService {
         //Log the info you care about here... I choose classname and view resource name, because they are simple, but interesting.
         Log.d("TAG", spacerString + nodeInfo.getClassName() + " " + nodeInfo.getViewIdResourceName() + " " +nodeInfo.getContentDescription());
 
-        if ( nodeInfo.getClassName().equals("android.widget.ImageView")) {
+        if (nodeInfo.getParent() != null) {
+
             Log.d("TAG", spacerString + nodeInfo.getClassName() + " " + nodeInfo.getViewIdResourceName());
-            nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+
+            if (nodeInfo.getParent().getChildCount() == 30){
+
+                if (nodeInfo.getParent().getChild(29).getChildCount() > 0){
+
+                    if (nodeInfo.getParent().getChild(29).getChild(0).getText().toString().equals("Daily Rewards")){
+                        nodeInfo.getParent().getChild(29).performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    }
+                }
+
+            }
+            else if (nodeInfo.getText() != null && nodeInfo.getText().toString().contains("Day")){
+
+                nodeInfo.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                Log.d("DAY","<-- node parent child count: "+ nodeInfo.getParent().getChildCount()  +"-->"+nodeInfo.getText().toString());
+            }
+            else if (nodeInfo.getText() != null && nodeInfo.getText().toString().equals("CLAIM NOW")) {
+
+                //<string name="claim_it_now">Claim it Now!</string>
+                //    <string name="claim_now">Claim Now</string>
+
+                Log.d("CLAIM",nodeInfo.getText().toString());
+            }
+
 
             Log.d(TAG, "logViewHierarchy: after click Image");
 
@@ -172,7 +207,7 @@ public class AppAccessibilityService extends AccessibilityService {
 
             final AccessibilityNodeInfo s = nodeInfo;
             new Handler().postDelayed(new Runnable() {
-                List<AccessibilityNodeInfo> list = s.findAccessibilityNodeInfosByViewId("action_search");
+                List<AccessibilityNodeInfo> list = s.findAccessibilityNodeInfosByViewId("menu_ic_buysim_dailyreward");
                 @Override
                 public void run() {
                     for (final AccessibilityNodeInfo view : list) {
