@@ -39,7 +39,7 @@ public class AppAccessibilityService extends AccessibilityService {
         if(node != null) {
             for(int i = 0; i < node.getChildCount(); i++){
                 AccessibilityNodeInfo childNode = node.getChild(i);
-                if(childNode != null){
+                if(childNode != null && childNode.getText() != null && childNode.getText().toString().equals("CLAIM NOW")){
                     Log.i("JZW", "-----getText->"+childNode.getText()+"---getContentDescription-->"+childNode.getContentDescription() );
                 }
             }
