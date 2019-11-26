@@ -1,16 +1,32 @@
-<LinearLayout
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical">
+	android:orientation="vertical"
+	android:background="@drawable/layout_bg">
 
+	<ImageView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:src="@drawable/logo"
+		android:id="@+id/logo"
+		android:layout_margin="40dp"
+		android:layout_above="@id/open_jw"/>
 
 	<Button
-		android:layout_width="wrap_content"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_margin="25dp"
 		android:id="@+id/open_jw"
-		android:text="open jazz world"/>
+		android:textColor="#FFFFFF"
+		android:textSize="18sp"
+		android:padding="8dp"
+		android:textAllCaps="false"
+		android:textStyle="bold"
+		android:layout_centerVertical="true"
+		android:text="Automate Daily Rewards"
+		android:background="@drawable/btn_bg"/>
 
-</LinearLayout>
+</RelativeLayout>

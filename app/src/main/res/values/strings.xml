@@ -1,5 +1,5 @@
 <resources>
-	<string	name="app_name"	translatable="false">whatsapp</string>
+	<string	name="app_name"	translatable="false">Automate DailyRewards</string>
 	<string name="accessibility_service_label" translatable="false">Access JazzWorld</string>
-	<string name="accessibility_service_description">Access JAzzWorld App</string>
+	<string name="accessibility_service_description">Access JazzWorld App to automate daily rewards</string>
 </resources>

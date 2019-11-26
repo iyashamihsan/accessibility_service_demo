@@ -3,6 +3,7 @@ package com.example.accessibility.services;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Toast;
 
 import com.example.accessibility.support.AccessAction;
 
@@ -41,6 +43,22 @@ public class AppAccessibilityService extends AccessibilityService {
                 AccessibilityNodeInfo childNode = node.getChild(i);
                 if(childNode != null && childNode.getText() != null && childNode.getText().toString().equals("CLAIM NOW")){
                     Log.i("JZW", "-----getText->"+childNode.getText()+"---getContentDescription-->"+childNode.getContentDescription() );
+                    if (childNode.isClickable()){
+                        Toast.makeText(this, childNode.getText().toString()+" Clicking...", Toast.LENGTH_SHORT).show();
+                        childNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    }
+                    else {
+
+                        Toast.makeText(this, childNode.getText().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else if(childNode != null && childNode.getText() != null && (childNode.getText().toString().equals("Continue") || childNode.getText().toString().equals("CONTINUE"))){
+                    Log.i("JZW", "-----getText->"+childNode.getText()+"---getContentDescription-->"+childNode.getContentDescription() );
+                    if (childNode.isClickable()){
+
+                        Toast.makeText(this, childNode.getText().toString()+" Clicking...", Toast.LENGTH_SHORT).show();
+                        childNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    }
                 }
             }
         }
@@ -138,6 +156,12 @@ public class AppAccessibilityService extends AccessibilityService {
         this.setServiceInfo(info);
 
         Log.d("JAZZ","service connected");
+
+        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.jazz.jazzworld");
+        launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(launchIntent);
+        Log.v("Whatsapp intent after", "opening jazzworld");
+        Toast.makeText(this, "Opening jazzworld", Toast.LENGTH_SHORT).show();
     }
 
     public static void logViewHierarchy(AccessibilityNodeInfo nodeInfo, final int depth) {

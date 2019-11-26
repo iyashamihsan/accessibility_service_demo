@@ -13,6 +13,7 @@ import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,8 +29,6 @@ public class MainActivity extends Activity {
 
 	private static final String TAG = "Access";
 	private Timer _timer = new Timer();
-	
-	private Intent start = new Intent();
 	private TimerTask delay;
 
 	Button openJazzWorldBtn;
@@ -41,14 +40,6 @@ public class MainActivity extends Activity {
 		openJazzWorldBtn = (Button) findViewById(R.id.open_jw);
 
 		openJazzWorldBtn.setOnClickListener(openJazzWorldAppClick);
-
-		//openWhatsapp = (Button) findViewById(R.id.open_wt);
-
-		//openWhatsapp.setOnClickListener(openWhatsappClick);
-
-
-		//initialize();
-		//initializeLogic();
 	}
 
 	View.OnClickListener openJazzWorldAppClick = new View.OnClickListener() {
@@ -59,10 +50,7 @@ public class MainActivity extends Activity {
 
 		}
 	};
-	
-	private void initialize() {
-		
-	}
+
 	private void initializeLogic() {
 		delay = new TimerTask() {
 			@Override
@@ -70,7 +58,7 @@ public class MainActivity extends Activity {
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						Intent start = getPackageManager().getLaunchIntentForPackage("com.whatsapp"); startActivity(start);
+						Intent start = getPackageManager().getLaunchIntentForPackage("com.jazz.jazzworld"); startActivity(start);
 					}
 				});
 			}
@@ -181,7 +169,7 @@ public class MainActivity extends Activity {
     public static boolean isAccessibilitySettingsOn(Context mContext) {
         int accessibilityEnabled = 0;
         //your package /   accesibility service path/class
-        final String service = "com.my.newproject3/com.my.newproject3.services.AppAccessibilityService";
+		final String service = "com.example.accessibility/com.example.accessibility.services.AppAccessibilityService";
 
         boolean accessibilityFound = false;
         try {
